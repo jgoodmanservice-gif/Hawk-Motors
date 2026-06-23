@@ -10,9 +10,9 @@ export function Footer({ contact }: { contact: SiteContact }) {
         <div className="md:col-span-2">
           <Logo variant="full" className="h-20 w-40" />
           <p className="mt-3 max-w-sm text-sm text-[rgb(var(--muted))]">
-            Premium used cars, handpicked and fully prepared. Instant valuations, competitive offers and a
-            fast, friendly, no-pressure buying experience.
+            Leicester&apos;s premium used car dealer. Handpicked and fully prepared vehicles, competitive prices, and a fast, friendly, no-pressure buying experience.
           </p>
+          <p className="mt-2 text-xs text-[rgb(var(--muted))]">Serving Leicester, Leicestershire &amp; the East Midlands.</p>
         </div>
 
         <div>

@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!v) return { title: "Vehicle not found" };
   const image = v.media.find((m) => m.type === "IMAGE")?.url;
   return {
-    title: v.metaTitle || v.title,
-    description: v.metaDescription || v.description?.slice(0, 155) || v.title,
+    title: v.metaTitle || `${v.title} for Sale in Leicester`,
+    description: v.metaDescription || v.description?.slice(0, 155) || `${v.title} for sale at Hawk Motors Leicester. ${v.mileage ? formatMileage(v.mileage) + ' miles. ' : ''}${v.year ? v.year + '. ' : ''}Call 07514552586.`,
     alternates: { canonical: `/vehicles/${v.slug}` },
     openGraph: {
       title: v.metaTitle || v.title,
@@ -66,6 +66,17 @@ export default async function VehiclePage({ params }: { params: { slug: string }
       price: v.price,
       availability: v.status === "AVAILABLE" ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
       url,
+      seller: {
+        "@type": "AutoDealer",
+        name: "Hawk Motors",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Leicester",
+          addressCountry: "GB",
+        },
+        telephone: "07514552586",
+        url: "https://hawk-motors.co.uk",
+      },
     },
   };
 

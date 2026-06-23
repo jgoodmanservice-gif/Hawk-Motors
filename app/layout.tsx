@@ -10,11 +10,11 @@ const oswald = Oswald({ subsets: ["latin"], variable: "--font-display", display:
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Hawk Motors | Premium Used Cars",
-    template: "%s | Hawk Motors",
+    default: "Hawk Motors | Used Cars Leicester | Premium Used Car Dealer",
+    template: "%s | Hawk Motors Leicester",
   },
   description:
-    "Hawk Motors — premium used cars. Browse our handpicked inventory of luxury and performance vehicles. Instant valuation, competitive offers, fast & easy process.",
+    "Hawk Motors — Leicester's premium used car dealer. Browse our handpicked inventory of quality used cars. Competitive prices, instant enquiries, fast & easy buying process. Call 07514552586.",
   openGraph: {
     type: "website",
     siteName: "Hawk Motors",
@@ -30,9 +30,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     ["--accent" as string]: `${contact.accent.r} ${contact.accent.g} ${contact.accent.b}`,
   } as React.CSSProperties;
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "AutoDealer",
+    name: "Hawk Motors",
+    description: "Leicester's premium used car dealer. Quality used cars at competitive prices.",
+    url: "https://hawk-motors.co.uk",
+    telephone: "07514552586",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Leicester",
+      addressRegion: "Leicestershire",
+      addressCountry: "GB",
+    },
+    areaServed: ["Leicester", "Leicestershire", "East Midlands"],
+    openingHours: "By appointment",
+  };
+
   return (
     <html lang="en-GB" suppressHydrationWarning>
       <body className={`${inter.variable} ${oswald.variable} bg-field min-h-screen font-sans`} style={accentStyle}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>
