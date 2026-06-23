@@ -25,7 +25,7 @@ export function QuickSearch({ options }: { options: FilterOptions }) {
   }
 
   return (
-    <section className="mx-auto -mt-6 max-w-7xl px-4 hidden md:block">
+    <section className="mx-auto -mt-6 max-w-screen-2xl px-4 hidden md:block">
       <form onSubmit={submit} className="glass relative z-10 grid gap-3 p-4 md:grid-cols-5 md:items-end">
         <div>
           <label className="label">Make</label>

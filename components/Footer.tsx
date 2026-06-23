@@ -6,7 +6,7 @@ import { telHref, mailtoHref, whatsappHref, type SiteContact } from "@/lib/site"
 export function Footer({ contact }: { contact: SiteContact }) {
   return (
     <footer className="mt-24 border-t border-white/5">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
+      <div className="mx-auto grid max-w-screen-2xl gap-10 px-4 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <Logo variant="full" className="h-20 w-40" />
           <p className="mt-3 max-w-sm text-sm text-[rgb(var(--muted))]">

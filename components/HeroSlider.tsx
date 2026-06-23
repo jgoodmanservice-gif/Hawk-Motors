@@ -21,7 +21,7 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
 
   if (count === 0) {
     return (
-      <section className="mx-auto max-w-7xl px-4 pt-8">
+      <section className="mx-auto max-w-screen-2xl px-4 pt-8">
         <div className="glass grid place-items-center px-6 py-24 text-center">
           <h1 className="font-display text-4xl font-extrabold heading-gradient">Hawk Motors</h1>
           <p className="mt-2 text-[rgb(var(--muted))]">Add vehicles in the admin panel to populate the showcase.</p>
@@ -34,7 +34,7 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
   const go = (d: number) => setI((p) => (p + d + count) % count);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-6">
+    <section className="mx-auto max-w-screen-2xl px-4 pt-6">
       <div className="glass relative overflow-hidden">
         <div className="relative aspect-[16/10] md:aspect-[21/9]">
           <AnimatePresence mode="wait">

@@ -19,8 +19,8 @@ export function Navbar({ contact }: { contact: SiteContact }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50">
-      <div className="mx-auto mt-3 max-w-7xl px-4">
-        <nav className="glass flex items-center justify-between px-4 py-2.5">
+      <div className="px-4">
+        <nav className="glass flex items-center justify-between px-6 py-2.5">
           <Link href="/" className="flex items-center gap-2" aria-label="Hawk Motors home">
             <Logo variant="mark" className="h-10 w-16" />
             <span className="metal-text text-lg font-extrabold uppercase tracking-[0.2em] font-display">

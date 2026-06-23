@@ -23,7 +23,7 @@ export default async function HomePage() {
       <HeroSlider slides={featured} phone={contact.phone} email={contact.email} />
       <QuickSearch options={options} />
 
-      <section className="mx-auto max-w-7xl px-4 py-20">
+      <section className="mx-auto max-w-screen-2xl px-4 py-20">
         <div className="mb-8 flex items-end justify-between">
           <div>
             <p className="chip border-accent/30 text-accent">{stock} vehicles in stock</p>

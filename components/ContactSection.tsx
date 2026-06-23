@@ -3,7 +3,7 @@ import { telHref, mailtoHref, whatsappHref, type SiteContact } from "@/lib/site"
 
 export function ContactSection({ contact }: { contact: SiteContact }) {
   return (
-    <section id="contact" className="mx-auto max-w-7xl px-4 py-20">
+    <section id="contact" className="mx-auto max-w-screen-2xl px-4 py-20">
       <div className="glass grid gap-8 p-6 md:grid-cols-2 md:p-10">
         <div>
           <h2 className="font-display text-3xl font-extrabold heading-gradient">Get in touch</h2>

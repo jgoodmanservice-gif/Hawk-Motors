@@ -12,7 +12,7 @@ const items = [
 
 export function WhyChooseUs() {
   return (
-    <section id="why" className="mx-auto max-w-7xl px-4 py-20">
+    <section id="why" className="mx-auto max-w-screen-2xl px-4 py-20">
       <div className="mb-10 text-center">
         <h2 className="font-display text-3xl font-extrabold heading-gradient md:text-4xl">Why choose Hawk Motors</h2>
         <p className="mx-auto mt-2 max-w-xl text-[rgb(var(--muted))]">A premium buying experience built on trust, quality and speed.</p>

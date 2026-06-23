@@ -72,7 +72,7 @@ export default async function VehiclePage({ params }: { params: { slug: string }
   const enquiryBody = `I'm interested in the ${v.title} (${formatPrice(v.price)}). Please get in touch.`;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="mx-auto max-w-screen-2xl px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <TrackView id={v.id} slug={v.slug} />
 
