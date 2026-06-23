@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { Gauge, Fuel, Cog, Calendar, Phone } from "lucide-react";
 import { formatPrice, formatMileage, STATUS_LABEL } from "@/lib/utils";
 import { telHref } from "@/lib/contact";
-import { SaveVehicleButton } from "./SaveVehicleButton";
 import type { VehicleCardData } from "@/lib/types";
 
 const statusColor: Record<string, string> = {
@@ -37,12 +36,9 @@ export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string })
         ) : (
           <div className="grid h-full place-items-center bg-ink-800 text-[rgb(var(--muted))]">No image</div>
         )}
-        <div className="absolute left-3 top-3 flex gap-2">
+        <div className="absolute left-3 top-3 hidden gap-2 sm:flex">
           {v.featured && <span className="chip border-accent/40 bg-black/40 text-white">★ Featured</span>}
           <span className={`chip border ${statusColor[v.status] ?? statusColor.DRAFT}`}>{STATUS_LABEL[v.status]}</span>
-        </div>
-        <div className="absolute right-3 top-3">
-          <SaveVehicleButton slug={v.slug} />
         </div>
       </Link>
 
