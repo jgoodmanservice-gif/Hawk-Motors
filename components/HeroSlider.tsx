@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Phone, Mail, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatPrice, formatMileage } from "@/lib/utils";
 import { telHref, mailtoHref } from "@/lib/contact";
@@ -11,13 +10,22 @@ import type { VehicleCardData } from "@/lib/types";
 
 export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]; phone: string; email: string }) {
   const [i, setI] = useState(0);
+  const [visible, setVisible] = useState(true);
   const count = slides.length;
 
   useEffect(() => {
     if (count < 2) return;
-    const t = setInterval(() => setI((p) => (p + 1) % count), 6000);
+    const t = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => { setI((p) => (p + 1) % count); setVisible(true); }, 400);
+    }, 6000);
     return () => clearInterval(t);
   }, [count]);
+
+  const go = (d: number) => {
+    setVisible(false);
+    setTimeout(() => { setI((p) => (p + d + count) % count); setVisible(true); }, 400);
+  };
 
   if (count === 0) {
     return (
@@ -31,33 +39,23 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
   }
 
   const v = slides[i];
-  const go = (d: number) => setI((p) => (p + d + count) % count);
 
   return (
     <section className="mx-auto max-w-screen-2xl px-4 pt-6">
       <div className="glass relative overflow-hidden">
         <div className="relative aspect-[16/10] md:aspect-[21/9]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={v.id}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7 }}
-              className="absolute inset-0"
-            >
-              {v.image && <Image src={v.image} alt={v.title} fill priority sizes="100vw" className="object-cover" />}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            </motion.div>
-          </AnimatePresence>
+          <div
+            className="absolute inset-0 transition-opacity duration-700"
+            style={{ opacity: visible ? 1 : 0 }}
+          >
+            {v.image && <Image src={v.image} alt={v.title} fill priority sizes="100vw" className="object-cover" />}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          </div>
 
           <div className="absolute inset-x-0 bottom-0 p-4 md:p-10">
-            <motion.div
-              key={`${v.id}-text`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="max-w-2xl"
+            <div
+              className="max-w-2xl transition-all duration-500"
+              style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)" }}
             >
               <span className="chip border-accent/40 text-white hidden sm:inline-flex">★ Featured vehicle</span>
               <h1 className="mt-2 font-display text-xl font-extrabold text-white sm:text-3xl md:text-5xl leading-tight hidden sm:block">{v.title}</h1>
@@ -74,7 +72,7 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
                 <a href={telHref(phone)} className="btn-ghost text-white py-1.5 text-xs sm:py-2 sm:text-sm"><Phone size={14} /> Call now</a>
                 <a href={mailtoHref(email, `Enquiry: ${v.title}`)} className="btn-ghost hidden text-white md:inline-flex"><Mail size={16} /> Email</a>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {count > 1 && (

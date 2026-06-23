@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { PoundSterling, Handshake, Gauge, ShieldCheck } from "lucide-react";
 
 const items = [
@@ -18,21 +15,14 @@ export function WhyChooseUs() {
         <p className="mx-auto mt-2 max-w-xl text-[rgb(var(--muted))]">A premium buying experience built on trust, quality and speed.</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((it, idx) => (
-          <motion.div
-            key={it.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: idx * 0.08 }}
-            className="glass glass-hover p-6"
-          >
+        {items.map((it) => (
+          <div key={it.title} className="glass glass-hover p-6 animate-fade-in-up">
             <div className="grid h-12 w-12 place-items-center rounded-xl border border-accent/30 bg-white/5 text-accent">
               <it.icon size={22} />
             </div>
             <h3 className="mt-4 font-display text-lg font-semibold">{it.title}</h3>
             <p className="mt-1.5 text-sm text-[rgb(var(--muted))]">{it.body}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

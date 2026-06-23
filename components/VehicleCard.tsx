@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Gauge, Fuel, Cog, Calendar, Phone } from "lucide-react";
 import { formatPrice, formatMileage, STATUS_LABEL } from "@/lib/utils";
 import { telHref } from "@/lib/contact";
@@ -17,13 +16,7 @@ const statusColor: Record<string, string> = {
 
 export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4 }}
-      className="glass glass-hover group overflow-hidden"
-    >
+    <article className="glass glass-hover group overflow-hidden animate-fade-in-up">
       <Link href={`/vehicles/${v.slug}`} className="relative block aspect-[16/10] overflow-hidden">
         {v.image ? (
           <Image
@@ -60,6 +53,6 @@ export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string })
           <a href={telHref(phone)} className="btn-accent py-1.5 text-xs" aria-label="Call now"><Phone size={13} /></a>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
