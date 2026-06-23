@@ -154,15 +154,18 @@ body {
 .light .crystal-sweep {
   background: linear-gradient(
     to right,
-    #1a1c22 0%,
-    #1a1c22 38%,
-    #4a5568 44%,
-    #718096 50%,
-    #4a5568 56%,
-    #1a1c22 62%,
-    #1a1c22 100%
+    #0f1114 0%,
+    #0f1114 38%,
+    #3a3f4a 44%,
+    #5a6070 50%,
+    #3a3f4a 56%,
+    #0f1114 62%,
+    #0f1114 100%
   );
   background-size: 300% 100%;
   background-position: 200% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   animation: crystal-sweep 4s ease-in-out infinite;
 }
