@@ -47,7 +47,16 @@ export async function getStockCount() {
 
 export async function getFilterOptions(): Promise<FilterOptions> {
   const [makes, fuelTypes, bodyStyles, colours] = await Promise.all([
-    prisma.make.findMany({ include: { models: { orderBy: { name: "asc" } } }, orderBy: { name: "asc" } }),
+    prisma.make.findMany({
+      where: { vehicles: { some: { status: { not: "DRAFT" } } } },
+      include: {
+        models: {
+          where: { vehicles: { some: { status: { not: "DRAFT" } } } },
+          orderBy: { name: "asc" },
+        },
+      },
+      orderBy: { name: "asc" },
+    }),
     prisma.fuelType.findMany({ orderBy: { name: "asc" } }),
     prisma.bodyStyle.findMany({ orderBy: { name: "asc" } }),
     prisma.colour.findMany({ orderBy: { name: "asc" } }),
