@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "Hawk Motors",
     images: ["/logo.svg"],
   },
-  icons: { icon: "/logo.svg" },
+  icons: { icon: "/icon.svg" },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
