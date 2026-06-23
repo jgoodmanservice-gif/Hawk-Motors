@@ -20,11 +20,8 @@ export function Navbar({ contact }: { contact: SiteContact }) {
     <header className="sticky top-0 z-50">
       <div className="px-4">
         <nav className="glass flex items-center justify-between px-6 py-2.5">
-          <Link href="/" className="flex items-center gap-2" aria-label="Hawk Motors home">
-            <Logo variant="mark" className="h-10 w-16" />
-            <span className="metal-text text-lg font-extrabold uppercase tracking-[0.2em] font-display">
-              Hawk Motors
-            </span>
+          <Link href="/" className="flex items-center" aria-label="Hawk Motors home">
+            <Logo variant="mark" className="h-14 w-24" />
           </Link>
 
           <div className="hidden items-center gap-1 md:flex">
