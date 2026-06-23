@@ -10,7 +10,6 @@ import { telHref, type SiteContact } from "@/lib/contact";
 const links = [
   { href: "/", label: "Home" },
   { href: "/inventory", label: "Inventory" },
-  { href: "/saved", label: "Saved" },
   { href: "/#why", label: "Why Us" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -33,7 +32,7 @@ export function Navbar({ contact }: { contact: SiteContact }) {
               <Link
                 key={l.href}
                 href={l.href}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-[rgb(var(--muted))] transition hover:bg-white/5 hover:text-[rgb(var(--fg))]"
+                className="rounded-lg px-4 py-2.5 text-base font-medium text-[rgb(var(--muted))] transition hover:bg-white/5 hover:text-[rgb(var(--fg))]"
               >
                 {l.label}
               </Link>
@@ -41,7 +40,7 @@ export function Navbar({ contact }: { contact: SiteContact }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <a href={telHref(contact.phone)} className="btn-accent hidden sm:inline-flex">
+            <a href={telHref(contact.phone)} className="btn-accent hidden sm:inline-flex text-base px-6 py-3">
               <Phone size={16} /> {contact.phone}
             </a>
             <ThemeToggle />
