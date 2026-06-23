@@ -125,3 +125,28 @@ body {
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Crystal sweep — right to left, reverts to silver once passed */
+.crystal-sweep {
+  background: linear-gradient(
+    to right,
+    #c5c7cd 0%,
+    #c5c7cd 38%,
+    #d8eeff 44%,
+    #ffffff 50%,
+    #d8eeff 56%,
+    #c5c7cd 62%,
+    #c5c7cd 100%
+  );
+  background-size: 300% 100%;
+  background-position: 200% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: crystal-sweep 4s ease-in-out infinite;
+}
+
+@keyframes crystal-sweep {
+  0%, 25%   { background-position: 200% center; }
+  75%, 100% { background-position: -100% center; }
+}
