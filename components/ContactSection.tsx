@@ -20,7 +20,6 @@ export function ContactSection({ contact }: { contact: SiteContact }) {
           <ul className="mt-7 space-y-3 text-sm text-[rgb(var(--muted))]">
             <li className="flex items-center gap-2"><Clock size={16} className="text-accent" /> {contact.openingHours}</li>
             {contact.addressLine && <li className="flex items-center gap-2"><MapPin size={16} className="text-accent" /> {contact.addressLine}</li>}
-            <li className="flex items-center gap-2"><Mail size={16} className="text-accent" /> {contact.email}</li>
           </ul>
         </div>
 
