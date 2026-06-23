@@ -89,9 +89,13 @@ export function VehicleForm({ initial, options }: { initial: VehicleFormData; op
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
-      (data.urls as string[] | undefined)?.forEach((url) => addMedia({ type: "IMAGE", url, alt: v.title || "" }));
-    } catch {
-      setError("Upload failed. Check your storage configuration.");
+      if (!res.ok) {
+        setError(`Upload failed: ${data.error || res.statusText}`);
+      } else {
+        (data.urls as string[] | undefined)?.forEach((url) => addMedia({ type: "IMAGE", url, alt: v.title || "" }));
+      }
+    } catch (e: unknown) {
+      setError(`Upload failed: ${e instanceof Error ? e.message : "Unknown error"}`);
     }
     setUploading(false);
   }

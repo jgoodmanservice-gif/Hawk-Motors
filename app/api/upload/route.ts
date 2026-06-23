@@ -10,12 +10,21 @@ export async function POST(req: Request) {
   const files = form.getAll("files") as File[];
   if (!files.length) return NextResponse.json({ error: "No files" }, { status: 400 });
 
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json({ error: "BLOB_READ_WRITE_TOKEN is not set. Add Vercel Blob storage in your Vercel project." }, { status: 500 });
+  }
+
   const urls: string[] = [];
-  for (const file of files) {
-    const ext = (file.name.split(".").pop() || "bin").toLowerCase();
-    const name = `vehicles/${randomUUID()}.${ext}`;
-    const blob = await put(name, file, { access: "public" });
-    urls.push(blob.url);
+  try {
+    for (const file of files) {
+      const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+      const name = `vehicles/${randomUUID()}.${ext}`;
+      const blob = await put(name, file, { access: "public" });
+      urls.push(blob.url);
+    }
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
   return NextResponse.json({ urls });
 }
