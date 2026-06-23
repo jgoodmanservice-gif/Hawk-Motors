@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Silver / chrome accent (matches the Hawk Motors logo). Override from admin. */
+  --accent: 197 199 205;       /* #c5c7cd metallic silver */
+  --accent-soft: 138 142 152;  /* muted steel */
+
+  --bg: 9 9 11;
+  --bg-elev: 18 19 23;
+  --fg: 240 241 244;
+  --muted: 161 165 175;
+  --border: 255 255 255;       /* used at low alpha */
+}
+
+.light {
+  --accent: 90 95 110;
+  --accent-soft: 140 145 158;
+  --bg: 244 245 248;
+  --bg-elev: 255 255 255;
+  --fg: 18 20 26;
+  --muted: 90 95 110;
+  --border: 10 12 18;
+}
+
+* {
+  border-color: rgb(var(--border) / 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--fg));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Premium dark gradient field */
+.bg-field {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgb(var(--accent) / 0.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgb(var(--accent-soft) / 0.08), transparent 55%),
+    rgb(var(--bg));
+}
+
+@layer components {
+  /* Core glassmorphism surface */
+  .glass {
+    @apply rounded-2xl border bg-white/5 backdrop-blur-xl;
+    border-color: rgb(var(--border) / 0.10);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  }
+  .light .glass {
+    @apply bg-white/70;
+    box-shadow: 0 8px 30px 0 rgba(20, 24, 40, 0.10);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 hover:-translate-y-1;
+  }
+  .glass-hover:hover {
+    border-color: rgb(var(--accent) / 0.35);
+    box-shadow: 0 14px 44px -8px rgba(0, 0, 0, 0.55), 0 0 30px -10px rgb(var(--accent) / 0.4);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200 disabled:opacity-50;
+  }
+  .btn-accent {
+    @apply btn text-ink-950;
+    background: linear-gradient(180deg, rgb(var(--accent)), rgb(var(--accent-soft)));
+  }
+  .btn-accent:hover {
+    box-shadow: 0 0 26px -4px rgb(var(--accent) / 0.6);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    @apply btn border bg-white/5 text-[rgb(var(--fg))] backdrop-blur-md hover:bg-white/10;
+  }
+  .btn-whatsapp {
+    @apply btn text-white;
+    background: linear-gradient(180deg, #2bd44f, #1faa3d);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium text-[rgb(var(--muted))];
+  }
+
+  .input {
+    @apply w-full rounded-xl border bg-white/5 px-4 py-2.5 text-sm text-[rgb(var(--fg))] outline-none backdrop-blur-md transition placeholder:text-[rgb(var(--muted))] focus:border-accent/60;
+  }
+  .light .input { @apply bg-white; }
+
+  .label {
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-wide text-[rgb(var(--muted))];
+  }
+
+  .heading-gradient {
+    background: linear-gradient(180deg, #fff, rgb(var(--accent-soft)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .light .heading-gradient {
+    background: linear-gradient(180deg, #14161a, #5a5f6e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Metallic shimmer for the wordmark / badges */
+.metal-text {
+  background: linear-gradient(100deg, #8a8e98 0%, #ffffff 20%, #c5c7cd 40%, #8a8e98 60%, #ffffff 80%, #c5c7cd 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

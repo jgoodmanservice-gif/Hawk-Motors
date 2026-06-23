@@ -1,0 +1,201 @@
+// Hawk Motors — Prisma schema (PostgreSQL)
+// Designed so future modules (finance, reservations, checkout) can be added
+// without breaking existing tables.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  DRAFT
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO_WALKAROUND
+  VIDEO_INTERIOR
+  VIDEO_YOUTUBE
+  VIDEO_VIMEO
+  DOCUMENT
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  COMPLETED
+  ARCHIVED
+}
+
+enum EnquiryType {
+  EMAIL
+  CALLBACK
+  WHATSAPP
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+}
+
+model Make {
+  id      String    @id @default(cuid())
+  name    String    @unique
+  slug    String    @unique
+  models  Model[]
+  Vehicle Vehicle[]
+}
+
+model Model {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String
+  make     Make      @relation(fields: [makeId], references: [id], onDelete: Cascade)
+  makeId   String
+  vehicles Vehicle[]
+
+  @@unique([makeId, name])
+}
+
+model FuelType {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  vehicles Vehicle[]
+}
+
+model BodyStyle {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  vehicles Vehicle[]
+}
+
+model Colour {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  hex      String?
+  vehicles Vehicle[]
+}
+
+model Vehicle {
+  id       String        @id @default(cuid())
+  slug     String        @unique
+  title    String
+  status   VehicleStatus @default(AVAILABLE)
+  featured Boolean       @default(false)
+
+  // Pricing
+  price Int // stored in whole pounds
+
+  // Categorisation
+  make        Make       @relation(fields: [makeId], references: [id])
+  makeId      String
+  model       Model      @relation(fields: [modelId], references: [id])
+  modelId     String
+  fuelType    FuelType?  @relation(fields: [fuelTypeId], references: [id])
+  fuelTypeId  String?
+  bodyStyle   BodyStyle? @relation(fields: [bodyStyleId], references: [id])
+  bodyStyleId String?
+  colour      Colour?    @relation(fields: [colourId], references: [id])
+  colourId    String?
+
+  // Specs
+  variant      String?
+  year         Int
+  registration String?
+  mileage      Int
+  engineSize   String? // e.g. "2.0L"
+  horsepower   Int?
+  transmission String? // Manual / Automatic
+  drivetrain   String? // FWD / RWD / AWD
+  doors        Int?
+  seats        Int?
+
+  // Long-form
+  description String?  @db.Text
+  features    String[] // bullet list of key features
+
+  // History / assurance
+  serviceHistory String?
+  motExpiry      DateTime?
+  owners         Int?
+  warranty       String?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  media     Media[]
+  enquiries Enquiry[]
+
+  views     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, featured])
+  @@index([makeId, modelId])
+  @@index([price, year, mileage])
+}
+
+model Media {
+  id        String    @id @default(cuid())
+  vehicle   Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId String
+  type      MediaType @default(IMAGE)
+  url       String
+  // For embeds we also keep the original provider id/url
+  embedUrl  String?
+  alt       String?
+  position  Int       @default(0)
+
+  @@index([vehicleId, position])
+}
+
+model Enquiry {
+  id      String        @id @default(cuid())
+  type    EnquiryType   @default(EMAIL)
+  status  EnquiryStatus @default(NEW)
+  name    String
+  email   String?
+  phone   String?
+  message String?       @db.Text
+
+  vehicle      Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  vehicleId    String?
+  // snapshot so enquiry detail survives if the vehicle is deleted
+  vehicleTitle String?
+
+  createdAt DateTime @default(now())
+
+  @@index([status, createdAt])
+}
+
+// Single-row table for admin-configurable site settings (accent colour, contact, hours).
+model SiteSetting {
+  id           Int      @id @default(1)
+  accentR      Int      @default(197)
+  accentG      Int      @default(199)
+  accentB      Int      @default(205)
+  phone        String   @default("07514552586")
+  whatsapp     String   @default("447514552586")
+  email        String   @default("enquiries@hawkmotors.co.uk")
+  addressLine  String   @default("")
+  openingHours String   @default("Mon–Sat 9:00–18:00 · Sun by appointment")
+  mapEmbedUrl  String   @default("")
+  updatedAt    DateTime @updatedAt
+}
