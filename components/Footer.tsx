@@ -30,7 +30,6 @@ export function Footer({ contact }: { contact: SiteContact }) {
           <ul className="space-y-2.5 text-sm text-[rgb(var(--muted))]">
             <li><a href={telHref(contact.phone)} className="flex items-center gap-2 hover:text-[rgb(var(--fg))]"><Phone size={15} /> {contact.phone}</a></li>
             <li><a href={whatsappHref(contact.whatsapp, "Hi Hawk Motors, I have an enquiry.")} className="flex items-center gap-2 hover:text-[rgb(var(--fg))]">WhatsApp {contact.phone}</a></li>
-            <li><a href={mailtoHref(contact.email)} className="flex items-center gap-2 hover:text-[rgb(var(--fg))]"><Mail size={15} /> {contact.email}</a></li>
             {contact.addressLine && <li className="flex items-center gap-2"><MapPin size={15} /> {contact.addressLine}</li>}
             <li className="flex items-center gap-2"><Clock size={15} /> {contact.openingHours}</li>
           </ul>
