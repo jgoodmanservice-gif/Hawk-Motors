@@ -21,8 +21,8 @@ export function Navbar({ contact }: { contact: SiteContact }) {
       <div className="px-4">
         <nav className="glass flex items-center justify-between px-6 py-2.5">
           <Link href="/" className="flex items-center gap-2" aria-label="Hawk Motors home">
-            <Logo variant="mark" className="h-14 w-36 object-cover object-top" />
-            <span className="metal-text text-lg font-extrabold uppercase tracking-[0.2em] font-display">
+            <Logo variant="mark" className="h-14 w-36 object-cover" style={{ objectPosition: "center 15%" }} />
+            <span className="metal-text text-2xl font-extrabold uppercase tracking-[0.2em] font-display">
               Hawk Motors
             </span>
           </Link>
