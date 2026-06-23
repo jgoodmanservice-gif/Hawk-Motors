@@ -48,7 +48,7 @@ export async function getStockCount() {
 export async function getFilterOptions(): Promise<FilterOptions> {
   const [makes, fuelTypes, bodyStyles, colours] = await Promise.all([
     prisma.make.findMany({
-      where: { vehicles: { some: { status: { not: "DRAFT" } } } },
+      where: { Vehicle: { some: { status: { not: "DRAFT" } } } },
       include: {
         models: {
           where: { vehicles: { some: { status: { not: "DRAFT" } } } },
