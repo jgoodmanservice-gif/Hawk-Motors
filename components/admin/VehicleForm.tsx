@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Save, Plus, X, ArrowUp, ArrowDown, Upload, Loader2, Video } from "lucide-react";
+import { ComboBox } from "./ComboBox";
 import type { FilterOptions } from "@/lib/types";
 import { youtubeThumb } from "@/lib/utils";
 
@@ -135,16 +136,21 @@ export function VehicleForm({ initial, options }: { initial: VehicleFormData; op
         <h2 className="mb-4 font-display text-lg font-semibold">Basics</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <div className={field}><label className="label">Make *</label>
-            <select className="input" value={v.makeId} onChange={(e) => { set("makeId", e.target.value); set("modelId", ""); }}>
-              <option value="">Select make</option>
-              {options.makes.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-            </select>
+            <ComboBox
+              value={v.makeId}
+              onChange={(id) => { set("makeId", id); set("modelId", ""); }}
+              options={options.makes}
+              placeholder="Type to search make…"
+            />
           </div>
           <div className={field}><label className="label">Model *</label>
-            <select className="input" value={v.modelId} onChange={(e) => set("modelId", e.target.value)} disabled={!v.makeId}>
-              <option value="">Select model</option>
-              {models.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-            </select>
+            <ComboBox
+              value={v.modelId}
+              onChange={(id) => set("modelId", id)}
+              options={models}
+              placeholder="Type to search model…"
+              disabled={!v.makeId}
+            />
           </div>
           <div className={field}><label className="label">Variant / trim</label><input className="input" value={v.variant} onChange={(e) => set("variant", e.target.value)} placeholder="e.g. AMG Line Premium Plus" /></div>
           <div className={field}><label className="label">Title (auto if blank)</label><input className="input" value={v.title ?? ""} onChange={(e) => set("title", e.target.value)} /></div>
