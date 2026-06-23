@@ -45,6 +45,21 @@ export async function getStockCount() {
   return prisma.vehicle.count({ where: { status: "AVAILABLE" } });
 }
 
+export async function getAllFilterOptions(): Promise<FilterOptions> {
+  const [makes, fuelTypes, bodyStyles, colours] = await Promise.all([
+    prisma.make.findMany({ include: { models: { orderBy: { name: "asc" } } }, orderBy: { name: "asc" } }),
+    prisma.fuelType.findMany({ orderBy: { name: "asc" } }),
+    prisma.bodyStyle.findMany({ orderBy: { name: "asc" } }),
+    prisma.colour.findMany({ orderBy: { name: "asc" } }),
+  ]);
+  return {
+    makes: makes.map((m) => ({ id: m.id, name: m.name, models: m.models.map((md) => ({ id: md.id, name: md.name })) })),
+    fuelTypes: fuelTypes.map((f) => ({ id: f.id, name: f.name })),
+    bodyStyles: bodyStyles.map((b) => ({ id: b.id, name: b.name })),
+    colours: colours.map((c) => ({ id: c.id, name: c.name })),
+  };
+}
+
 export async function getFilterOptions(): Promise<FilterOptions> {
   const [makes, fuelTypes, bodyStyles, colours] = await Promise.all([
     prisma.make.findMany({

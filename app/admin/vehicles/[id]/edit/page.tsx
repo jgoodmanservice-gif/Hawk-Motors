@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getFilterOptions } from "@/lib/vehicles";
+import { getAllFilterOptions } from "@/lib/vehicles";
 import { VehicleForm, type VehicleFormData } from "@/components/admin/VehicleForm";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function EditVehicle({ params }: { params: { id: string } }) {
   const [v, options] = await Promise.all([
     prisma.vehicle.findUnique({ where: { id: params.id }, include: { media: { orderBy: { position: "asc" } } } }),
-    getFilterOptions(),
+    getAllFilterOptions(),
   ]);
   if (!v) notFound();
 

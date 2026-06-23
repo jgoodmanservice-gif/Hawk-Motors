@@ -1,10 +1,10 @@
-import { getFilterOptions } from "@/lib/vehicles";
+import { getAllFilterOptions } from "@/lib/vehicles";
 import { CategoryManager } from "@/components/admin/CategoryManager";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminCategories() {
-  const options = await getFilterOptions();
+  const options = await getAllFilterOptions();
   return (
     <div>
       <h1 className="mb-1 font-display text-3xl font-extrabold heading-gradient">Categories</h1>
