@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Phone, MapPin, Clock, Facebook, Instagram } from "lucide-react";
+import { Phone, MapPin, Clock, Facebook } from "lucide-react";
 import { Logo } from "./Logo";
 import { telHref, whatsappHref, type SiteContact } from "@/lib/site";
 
@@ -22,9 +22,8 @@ export function Footer({ contact }: { contact: SiteContact }) {
           </p>
           <p className="mt-2 text-xs text-[rgb(var(--muted))]">Serving Leicester, Leicestershire &amp; the East Midlands.</p>
           <div className="mt-4 flex gap-3">
-            <a href="https://www.facebook.com/hawkmotorsleicester" target="_blank" rel="noopener noreferrer" aria-label="Hawk Motors on Facebook" className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 transition"><Facebook size={15} /></a>
-            <a href="https://www.instagram.com/hawkmotorsleicester" target="_blank" rel="noopener noreferrer" aria-label="Hawk Motors on Instagram" className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 transition"><Instagram size={15} /></a>
-            <a href={whatsappHref(contact.whatsapp, "Hi Hawk Motors, I have an enquiry.")} target="_blank" rel="noopener noreferrer" aria-label="Message Hawk Motors on WhatsApp" className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 transition"><WhatsAppIcon /></a>
+            <a href="https://www.facebook.com/share/1G6jMLbnP5/" target="_blank" rel="noopener noreferrer" aria-label="Hawk Motors Leicester on Facebook" className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 transition"><Facebook size={15} /></a>
+            <a href={whatsappHref(contact.whatsapp, "Hi Hawk Motors, I have an enquiry.")} target="_blank" rel="noopener noreferrer" aria-label="Message Hawk Motors Leicester on WhatsApp" className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 hover:bg-white/15 transition"><WhatsAppIcon /></a>
           </div>
         </div>
 
