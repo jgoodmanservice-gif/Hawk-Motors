@@ -42,7 +42,7 @@ export function InventoryFilters({ options }: { options: FilterOptions }) {
 
       <div className={`${open ? "block" : "hidden"} p-5 pt-0 lg:block lg:p-5`}>
         <div className="mb-4 hidden items-center justify-between lg:flex">
-          <h3 className="flex items-center gap-2 font-display text-lg font-semibold"><SlidersHorizontal size={18} /> Filters</h3>
+          <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><SlidersHorizontal size={18} /> Filters</h2>
           {hasFilters && (
             <button onClick={() => router.push("/inventory")} className="flex items-center gap-1 text-xs text-[rgb(var(--muted))] hover:text-[rgb(var(--fg))]">
               <X size={13} /> Clear

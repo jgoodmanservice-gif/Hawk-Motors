@@ -16,7 +16,7 @@ export function Footer({ contact }: { contact: SiteContact }) {
         </div>
 
         <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide">Explore</h4>
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide">Explore</h3>
           <ul className="space-y-2 text-sm text-[rgb(var(--muted))]">
             <li><Link href="/inventory" className="hover:text-[rgb(var(--fg))]">All vehicles</Link></li>
             <li><Link href="/inventory?status=AVAILABLE" className="hover:text-[rgb(var(--fg))]">Available now</Link></li>
@@ -26,7 +26,7 @@ export function Footer({ contact }: { contact: SiteContact }) {
         </div>
 
         <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide">Get in touch</h4>
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide">Get in touch</h3>
           <ul className="space-y-2.5 text-sm text-[rgb(var(--muted))]">
             <li><a href={telHref(contact.phone)} className="flex items-center gap-2 hover:text-[rgb(var(--fg))]"><Phone size={15} /> {contact.phone}</a></li>
             <li><a href={whatsappHref(contact.whatsapp, "Hi Hawk Motors, I have an enquiry.")} className="flex items-center gap-2 hover:text-[rgb(var(--fg))]">WhatsApp {contact.phone}</a></li>
