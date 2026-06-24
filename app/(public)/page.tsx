@@ -30,7 +30,7 @@ export default async function HomePage() {
             <h2 className="mt-3 font-display text-3xl font-extrabold heading-gradient md:text-4xl">Featured vehicles</h2>
           </div>
           <Link href="/inventory" className="btn-ghost hidden sm:inline-flex">
-            View all <ArrowRight size={16} />
+            Browse used cars <ArrowRight size={16} />
           </Link>
         </div>
 
@@ -45,7 +45,7 @@ export default async function HomePage() {
         )}
 
         <div className="mt-8 text-center sm:hidden">
-          <Link href="/inventory" className="btn-accent">View all inventory <ArrowRight size={16} /></Link>
+          <Link href="/inventory" className="btn-accent">See all used cars in stock <ArrowRight size={16} /></Link>
         </div>
       </section>
 

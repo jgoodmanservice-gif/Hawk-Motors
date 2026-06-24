@@ -68,7 +68,7 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
               </p>
               <div className="mt-3 flex flex-wrap gap-2 md:mt-5">
                 <Link href={`/vehicles/${v.slug}`} className="btn-accent py-1.5 text-xs sm:py-2 sm:text-sm">View vehicle</Link>
-                <Link href="/inventory" className="btn-ghost hidden text-white sm:inline-flex">View inventory</Link>
+                <Link href="/inventory" className="btn-ghost hidden text-white sm:inline-flex">All used cars</Link>
                 <a href={telHref(phone)} className="btn-ghost text-white py-1.5 text-xs sm:py-2 sm:text-sm"><Phone size={14} /> Call now</a>
                 <a href={mailtoHref(email, `Enquiry: ${v.title}`)} className="btn-ghost hidden text-white md:inline-flex"><Mail size={16} /> Email</a>
               </div>

@@ -19,7 +19,7 @@ export function Footer({ contact }: { contact: SiteContact }) {
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide">Explore</h3>
           <ul className="space-y-2 text-sm text-[rgb(var(--muted))]">
             <li><Link href="/inventory" className="hover:text-[rgb(var(--fg))]">All vehicles</Link></li>
-            <li><Link href="/inventory?status=AVAILABLE" className="hover:text-[rgb(var(--fg))]">Available now</Link></li>
+            <li><Link href="/inventory?status=AVAILABLE" rel="nofollow" className="hover:text-[rgb(var(--fg))]">Available now</Link></li>
             <li><Link href="/#why" className="hover:text-[rgb(var(--fg))]">Why choose us</Link></li>
             <li><Link href="/#contact" className="hover:text-[rgb(var(--fg))]">Contact</Link></li>
           </ul>
