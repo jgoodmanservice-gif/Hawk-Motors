@@ -62,13 +62,25 @@ export default async function HomePage() {
               <p>
                 Every used car in our inventory has been individually selected and thoroughly inspected before it is offered for sale. We believe that buying a used car should be a positive experience, which is why we are transparent about each vehicle&apos;s history, condition and pricing. There are no hidden fees and no high-pressure sales tactics — just honest advice and quality cars at competitive prices.
               </p>
+              <p>
+                Our stock covers a broad range of popular makes and models. From sporty hatchbacks and practical family saloons to spacious SUVs, crossovers and performance cars, Hawk Motors sources vehicles that appeal to a wide range of buyers across Leicestershire. We carefully consider mileage, service history, condition and value when selecting each car, so every vehicle on our forecourt meets our high standards before it is offered to customers.
+              </p>
+              <p>
+                Buying a used car by appointment means you get dedicated, personal attention from our team with no distractions. We take the time to walk you through the vehicle, answer your questions honestly and ensure you feel completely confident before making any decision. There is never any pressure to buy on the day — we would rather you leave happy and return when you are ready than rush into a purchase that is not right for you.
+              </p>
             </div>
             <div className="space-y-4">
               <p>
                 Leicester is home to a thriving automotive market, and Hawk Motors is proud to be part of it. We stock a wide variety of makes and models to suit all budgets, from reliable everyday runarounds to prestige and performance vehicles. Our used car stock is regularly updated, so whether you browse online or get in touch directly, you can be confident that what you see is what is available.
               </p>
               <p>
-                Part exchange is always welcome at Hawk Motors. If you are looking to sell your current vehicle and put the value towards a used car from our Leicester stock, we offer fair and competitive valuations. Get in touch with our team today by phone or use our online enquiry form to ask about any vehicle — we look forward to helping you find your perfect used car in Leicester.
+                Part exchange is always welcome at Hawk Motors. If you are looking to sell your current vehicle and put the value towards a used car from our Leicester stock, we offer fair and competitive valuations. This makes upgrading straightforward and hassle-free, with no need to deal with private sale advertising, time-wasters or no-shows. Simply bring your current car along and we will assess it honestly.
+              </p>
+              <p>
+                We are conveniently accessible for buyers from across the region, including Loughborough, Hinckley, Melton Mowbray, Market Harborough, Coalville, Coventry and Nottingham. Many of our customers travel to Hawk Motors from across the East Midlands because of our reputation for straightforward, honest used car sales and the quality of our stock. We are happy to arrange viewings at a time that suits you — simply call or send an enquiry through our website.
+              </p>
+              <p>
+                Whether you are a first-time buyer looking for a reliable and affordable runabout, or an experienced driver searching for a premium used vehicle, Hawk Motors Leicester has the right car for you. Browse our latest stock online, use our filters to narrow down your search, or get in touch with our friendly team today. We look forward to helping you drive away in your next car.
               </p>
             </div>
           </div>
