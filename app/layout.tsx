@@ -10,8 +10,8 @@ const oswald = Oswald({ subsets: ["latin"], variable: "--font-display", display:
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Hawk Motors | Used Cars Leicester | Premium Used Car Dealer",
-    template: "%s | Hawk Motors Leicester",
+    default: "Hawk Motors | Used Cars Leicester",
+    template: "%s | Hawk Motors",
   },
   description:
     "Hawk Motors — Leicester's premium used car dealer. Browse our handpicked inventory of quality used cars. Competitive prices, instant enquiries, fast & easy buying process. Call 07514552586.",
