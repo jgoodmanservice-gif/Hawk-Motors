@@ -49,7 +49,7 @@ export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string })
         </div>
 
         <div className="mt-3 flex gap-2">
-          <Link href={`/vehicles/${v.slug}`} className="btn-ghost flex-1 py-1.5 text-xs">View</Link>
+          <Link href={`/vehicles/${v.slug}`} className="btn-ghost flex-1 py-1.5 text-xs" aria-label={`View ${v.title}`}>View</Link>
           <a href={telHref(phone)} className="btn-accent py-1.5 text-xs" aria-label="Call now"><Phone size={13} /></a>
         </div>
       </div>
