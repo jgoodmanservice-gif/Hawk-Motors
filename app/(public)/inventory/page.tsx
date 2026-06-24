@@ -22,7 +22,7 @@ export default async function InventoryPage({ searchParams }: { searchParams: Se
   return (
     <div className="mx-auto max-w-screen-2xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="font-display text-4xl font-extrabold heading-gradient">Inventory</h1>
+        <h1 className="font-display text-4xl font-extrabold heading-gradient">Used Cars for Sale in Leicester</h1>
         <p className="mt-1 text-[rgb(var(--muted))]">Handpicked premium stock, fully prepared and ready to drive.</p>
       </header>
 

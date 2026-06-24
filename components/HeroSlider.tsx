@@ -58,7 +58,7 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
               style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)" }}
             >
               <span className="chip border-accent/40 text-white hidden sm:inline-flex">★ Featured vehicle</span>
-              <h1 className="mt-2 font-display text-xl font-extrabold text-white sm:text-3xl md:text-5xl leading-tight hidden sm:block">{v.title}</h1>
+              <h1 className="mt-2 font-display text-base font-extrabold text-white sm:text-3xl md:text-5xl leading-tight">{v.title}</h1>
               <p className="mt-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/80 sm:text-sm hidden sm:flex">
                 <span className="text-lg font-bold text-white sm:text-2xl">{formatPrice(v.price)}</span>
                 <span>{v.year}</span>
