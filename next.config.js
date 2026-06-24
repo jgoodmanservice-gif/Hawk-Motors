@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  poweredByHeader: false,
   reactStrictMode: true,
   images: {
     // Allow remote sample imagery + your future CDN / cloud storage bucket.
