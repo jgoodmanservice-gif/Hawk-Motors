@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Used Cars for Sale in Leicester | Full Inventory",
-  description: "Browse all used cars for sale at Hawk Motors in Leicester. Filter by make, model, price, year, mileage, fuel type and more. Quality used cars at competitive prices.",
+  description: "Browse used cars for sale at Hawk Motors Leicester. Filter by make, model, price, year and mileage. Quality stock at competitive prices.",
 };
 
 export default async function InventoryPage({ searchParams }: { searchParams: SearchParams }) {

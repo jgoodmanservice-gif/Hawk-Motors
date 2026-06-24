@@ -13,8 +13,7 @@ export const metadata: Metadata = {
     default: "Hawk Motors | Used Cars Leicester",
     template: "%s | Hawk Motors",
   },
-  description:
-    "Hawk Motors — Leicester's premium used car dealer. Browse our handpicked inventory of quality used cars. Competitive prices, instant enquiries, fast & easy buying process. Call 07514552586.",
+  description: "Hawk Motors — Leicester's used car dealer. Quality handpicked used cars at competitive prices. No pressure, fast process. Call 07514552586.",
   openGraph: {
     type: "website",
     siteName: "Hawk Motors",
