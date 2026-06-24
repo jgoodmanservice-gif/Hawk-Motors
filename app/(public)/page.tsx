@@ -8,7 +8,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { getFeatured, getFilterOptions, getStockCount } from "@/lib/vehicles";
 import { getSiteContact } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [featured, options, stock, contact] = await Promise.all([

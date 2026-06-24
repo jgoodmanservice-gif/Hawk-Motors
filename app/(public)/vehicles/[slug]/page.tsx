@@ -11,7 +11,7 @@ import { VehicleCard } from "@/components/VehicleCard";
 import { TrackView } from "@/components/TrackView";
 import { ShareButtons } from "@/components/ShareButtons";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const v = await getVehicleBySlug(params.slug);
