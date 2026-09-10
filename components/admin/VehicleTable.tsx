@@ -76,6 +76,7 @@ export function VehicleTable({ vehicles }: { vehicles: VehicleCardData[] }) {
             </button>
             <div className="relative col-start-2 flex items-center justify-end gap-1 md:col-start-auto">
               <Link href={`/admin/vehicles/${v.id}/edit`} className="grid h-8 w-8 place-items-center rounded-lg hover:bg-white/10" aria-label="Edit"><Pencil size={15} /></Link>
+              <button onClick={() => remove(v.id)} className="grid h-8 w-8 place-items-center rounded-lg text-rose-300 hover:bg-rose-500/10" aria-label="Delete"><Trash2 size={15} /></button>
               <button onClick={() => setMenu(menu === v.id ? null : v.id)} className="grid h-8 w-8 place-items-center rounded-lg hover:bg-white/10" aria-label="More"><MoreVertical size={15} /></button>
               {menu === v.id && (
                 <div className="absolute right-0 top-9 z-20 w-44 overflow-hidden rounded-xl border border-white/10 bg-ink-800 shadow-glass">
