@@ -9,8 +9,8 @@ import { ComboBox } from "./ComboBox";
 import type { FilterOptions } from "@/lib/types";
 import { youtubeThumb } from "@/lib/utils";
 
-/** Scales large photos down to 2000px on the long edge as JPEG; returns the original if it can't or needn't. */
-async function shrinkImage(file: File, maxEdge = 2000): Promise<File> {
+/** Scales large photos down to 3000px on the long edge as JPEG; returns the original if it can't or needn't. */
+async function shrinkImage(file: File, maxEdge = 3000): Promise<File> {
   try {
     const bitmap = await createImageBitmap(file);
     const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
@@ -20,7 +20,7 @@ async function shrinkImage(file: File, maxEdge = 2000): Promise<File> {
     canvas.height = Math.round(bitmap.height * scale);
     canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
     bitmap.close();
-    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.85));
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.9));
     return blob ? new File([blob], "photo.jpg", { type: "image/jpeg" }) : file;
   } catch {
     return file;

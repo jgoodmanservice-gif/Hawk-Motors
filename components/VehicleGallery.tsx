@@ -60,6 +60,7 @@ export function VehicleGallery({ items }: { items: GalleryItem[] }) {
                   fill
                   priority={idx === 0}
                   loading={idx === 0 ? undefined : "eager"}
+                  quality={90}
                   sizes="(max-width:1024px) 100vw, 66vw"
                   className={`object-cover transition-opacity duration-200 ${idx === active ? "opacity-100" : "opacity-0"}`}
                 />
@@ -106,7 +107,7 @@ export function VehicleGallery({ items }: { items: GalleryItem[] }) {
           >
             <button className="absolute right-5 top-5 text-white" aria-label="Close"><X size={28} /></button>
             <div className="relative h-[80vh] w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-              <Image src={current.url} alt={current.alt || "Vehicle"} fill className="object-contain" sizes="100vw" />
+              <Image src={current.url} alt={current.alt || "Vehicle"} fill quality={90} className="object-contain" sizes="100vw" />
               <button onClick={() => go(-1)} className="absolute left-2 top-1/2 -translate-y-1/2 text-white"><ChevronLeft size={36} /></button>
               <button onClick={() => go(1)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white"><ChevronRight size={36} /></button>
             </div>
