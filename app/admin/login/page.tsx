@@ -32,7 +32,7 @@ export default function LoginPage() {
     <div className="grid min-h-screen place-items-center px-4">
       <div className="glass w-full max-w-sm p-8">
         <div className="mb-6 flex flex-col items-center">
-          <Logo variant="full" className="h-24 w-44" />
+          <Logo className="h-auto w-72 max-w-full" />
           <p className="mt-1 text-sm text-[rgb(var(--muted))]">Admin sign in</p>
         </div>
         <form onSubmit={submit} className="space-y-3">

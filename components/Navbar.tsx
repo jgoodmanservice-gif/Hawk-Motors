@@ -19,38 +19,29 @@ export function Navbar({ contact }: { contact: SiteContact }) {
   return (
     <header className="sticky top-0 z-50">
       <div className="px-4">
-        <nav className="glass flex items-center justify-between px-6 py-2.5">
-          <Link href="/" className="flex items-center gap-2" aria-label="Hawk Motors home">
+        <nav className="glass flex items-center justify-between gap-2 px-4 py-2.5 md:px-6">
+          <Link href="/" className="flex items-center" aria-label="Hawk Motor Centre home">
             <div className="relative">
-              <Logo variant="mark" className="h-14 w-36 object-cover" style={{ objectPosition: "center 5%" }} />
+              <Logo className="h-12 w-auto md:h-16" />
               {/* Left wing tip */}
-              <span className="pointer-events-none absolute" style={{ left: "2px", top: "48%", marginTop: "-7px" }}>
+              <span className="pointer-events-none absolute" style={{ left: "1%", top: "4%", margin: "-7px 0 0 -7px" }}>
                 <span className="wing-sparkle" style={{ animationDelay: "0s" }}>
-                  <svg viewBox="0 0 16 16" width="14" height="14" fill="white" aria-hidden="true">
-                    <path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" />
-                  </svg>
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="white" aria-hidden="true"><path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" /></svg>
                 </span>
               </span>
-              {/* Beak / crown */}
-              <span className="pointer-events-none absolute" style={{ left: "50%", top: "4px", marginLeft: "-6px" }}>
+              {/* Diamond */}
+              <span className="pointer-events-none absolute" style={{ left: "25%", top: "64%", margin: "-6px 0 0 -6px" }}>
                 <span className="wing-sparkle" style={{ animationDelay: "0.9s" }}>
-                  <svg viewBox="0 0 16 16" width="12" height="12" fill="white" aria-hidden="true">
-                    <path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" />
-                  </svg>
+                  <svg viewBox="0 0 16 16" width="12" height="12" fill="white" aria-hidden="true"><path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" /></svg>
                 </span>
               </span>
               {/* Right wing tip */}
-              <span className="pointer-events-none absolute" style={{ right: "2px", top: "48%", marginTop: "-7px" }}>
+              <span className="pointer-events-none absolute" style={{ left: "52.5%", top: "3%", margin: "-7px 0 0 -7px" }}>
                 <span className="wing-sparkle" style={{ animationDelay: "1.8s" }}>
-                  <svg viewBox="0 0 16 16" width="14" height="14" fill="white" aria-hidden="true">
-                    <path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" />
-                  </svg>
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="white" aria-hidden="true"><path d="M8 0 L9.2 6.8 L16 8 L9.2 9.2 L8 16 L6.8 9.2 L0 8 L6.8 6.8 Z" /></svg>
                 </span>
               </span>
             </div>
-            <span className="crystal-sweep text-2xl font-extrabold uppercase tracking-[0.2em] font-display">
-              Hawk Motors
-            </span>
           </Link>
 
           <div className="hidden items-center gap-1 md:flex">

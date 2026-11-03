@@ -20,7 +20,7 @@ export function AdminNav() {
   return (
     <aside className="flex w-full flex-row gap-1 overflow-x-auto p-3 md:h-screen md:w-64 md:flex-col md:gap-1 md:border-r md:border-white/5">
       <Link href="/" className="mb-4 hidden items-center gap-2 px-2 md:flex">
-        <Logo variant="mark" className="h-9 w-14" />
+        <Logo variant="mark" className="h-8 w-auto" />
         <span className="metal-text font-display text-sm font-extrabold uppercase tracking-widest">Hawk Admin</span>
       </Link>
       {items.map((it) => {

@@ -16,7 +16,7 @@ export function Footer({ contact }: { contact: SiteContact }) {
     <footer className="mt-24 border-t border-white/5">
       <div className="mx-auto grid max-w-screen-2xl gap-10 px-4 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
-          <Logo variant="full" className="h-20 w-40" />
+          <Logo className="h-auto w-64" />
           <p className="mt-3 max-w-sm text-sm text-[rgb(var(--muted))]">
             Leicester&apos;s premium used car dealer. Handpicked and fully prepared vehicles, competitive prices, and a fast, friendly, no-pressure buying experience.
           </p>

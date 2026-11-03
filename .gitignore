@@ -11,3 +11,5 @@ npm-debug.log*
 !/public/uploads/.gitkeep
 next-env.d.ts
 /prisma/*.db
+.vercel
+.env*.local
