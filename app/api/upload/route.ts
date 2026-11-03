@@ -1,30 +1,32 @@
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
-import { randomUUID } from "crypto";
+import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { requireAdmin } from "@/lib/guard";
 
+// Issues short-lived tokens so the browser uploads images straight to Vercel Blob.
+// Files never pass through this function, which avoids Vercel's 4.5 MB request body limit.
 export async function POST(req: Request) {
-  if (!(await requireAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const form = await req.formData();
-  const files = form.getAll("files") as File[];
-  if (!files.length) return NextResponse.json({ error: "No files" }, { status: 400 });
-
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return NextResponse.json({ error: "BLOB_READ_WRITE_TOKEN is not set. Add Vercel Blob storage in your Vercel project." }, { status: 500 });
   }
 
-  const urls: string[] = [];
+  const body = (await req.json()) as HandleUploadBody;
   try {
-    for (const file of files) {
-      const ext = (file.name.split(".").pop() || "bin").toLowerCase();
-      const name = `vehicles/${randomUUID()}.${ext}`;
-      const blob = await put(name, file, { access: "public" });
-      urls.push(blob.url);
-    }
+    const result = await handleUpload({
+      body,
+      request: req,
+      onBeforeGenerateToken: async (pathname) => {
+        if (!(await requireAdmin())) throw new Error("Unauthorized");
+        if (!pathname.startsWith("vehicles/")) throw new Error("Invalid upload path");
+        return {
+          allowedContentTypes: ["image/*"],
+          maximumSizeInBytes: 50 * 1024 * 1024,
+          addRandomSuffix: true,
+        };
+      },
+    });
+    return NextResponse.json(result);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json({ error: msg }, { status: msg === "Unauthorized" ? 401 : 400 });
   }
-  return NextResponse.json({ urls });
 }

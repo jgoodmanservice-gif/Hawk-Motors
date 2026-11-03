@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { upload as uploadToBlob } from "@vercel/blob/client";
 import { Save, Plus, X, ArrowUp, ArrowDown, Upload, Loader2, Video } from "lucide-react";
 import { ComboBox } from "./ComboBox";
 import type { FilterOptions } from "@/lib/types";
@@ -84,15 +85,17 @@ export function VehicleForm({ initial, options }: { initial: VehicleFormData; op
   async function onUpload(files: FileList | null) {
     if (!files?.length) return;
     setUploading(true);
-    const fd = new FormData();
-    Array.from(files).forEach((f) => fd.append("files", f));
+    setError("");
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(`Upload failed: ${data.error || res.statusText}`);
-      } else {
-        (data.urls as string[] | undefined)?.forEach((url) => addMedia({ type: "IMAGE", url, alt: v.title || "" }));
+      // Upload each file straight from the browser to Vercel Blob (no 4.5 MB server limit).
+      for (const file of Array.from(files)) {
+        const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+        const blob = await uploadToBlob(`vehicles/photo.${ext}`, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+          multipart: file.size > 5 * 1024 * 1024,
+        });
+        addMedia({ type: "IMAGE", url: blob.url, alt: v.title || "" });
       }
     } catch (e: unknown) {
       setError(`Upload failed: ${e instanceof Error ? e.message : "Unknown error"}`);
