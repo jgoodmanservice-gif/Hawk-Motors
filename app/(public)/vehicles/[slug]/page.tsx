@@ -93,12 +93,12 @@ export default async function VehiclePage({ params }: { params: { slug: string }
         <span className="text-[rgb(var(--fg))]">{v.make.name} {v.model.name}</span>
       </nav>
 
-      <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid grid-cols-1 gap-8 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         {/* Left: media + info */}
         <div>
           <VehicleGallery items={v.media.map((m) => ({ id: m.id, type: m.type, url: m.url, embedUrl: m.embedUrl, alt: m.alt }))} />
 
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
             <span className={`chip border ${v.status === "AVAILABLE" ? "border-emerald-400/30 text-emerald-300" : v.status === "RESERVED" ? "border-amber-400/30 text-amber-300" : "border-rose-400/30 text-rose-300"}`}>
               {STATUS_LABEL[v.status]}
             </span>

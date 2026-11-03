@@ -26,7 +26,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
 
   const cls = "grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/15";
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <span className="text-xs text-[rgb(var(--muted))]">Share</span>
       <a className={cls} href={`https://www.facebook.com/sharer/sharer.php?u=${enc}`} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><Facebook size={15} /></a>
       <a className={cls} href={`https://twitter.com/intent/tweet?url=${enc}&text=${t}`} target="_blank" rel="noopener noreferrer" aria-label="Share on X / Twitter"><Twitter size={15} /></a>
