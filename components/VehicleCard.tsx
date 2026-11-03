@@ -8,10 +8,10 @@ import { telHref } from "@/lib/contact";
 import type { VehicleCardData } from "@/lib/types";
 
 const statusColor: Record<string, string> = {
-  AVAILABLE: "bg-emerald-500/20 text-emerald-300 border-emerald-400/30",
-  RESERVED: "bg-amber-500/20 text-amber-300 border-amber-400/30",
-  SOLD: "bg-rose-500/20 text-rose-300 border-rose-400/30",
-  DRAFT: "bg-white/10 text-white/60 border-white/20",
+  AVAILABLE: "bg-emerald-600 text-white border-emerald-400",
+  RESERVED: "bg-amber-400 text-black border-amber-300",
+  SOLD: "bg-rose-600 text-white border-rose-400",
+  DRAFT: "bg-neutral-700 text-white border-neutral-500",
 };
 
 export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string }) {
@@ -30,8 +30,8 @@ export function VehicleCard({ v, phone }: { v: VehicleCardData; phone: string })
           <div className="grid h-full place-items-center bg-ink-800 text-[rgb(var(--muted))]">No image</div>
         )}
         <div className="absolute left-3 top-3 hidden gap-2 sm:flex">
-          {v.featured && <span className="chip border-accent/40 bg-black/40 text-white">★ Featured</span>}
-          <span className={`chip border ${statusColor[v.status] ?? statusColor.DRAFT}`}>{STATUS_LABEL[v.status]}</span>
+          {v.featured && <span className="chip border-accent/60 bg-black/80 font-semibold text-white shadow-lg shadow-black/40">★ Featured</span>}
+          <span className={`chip border font-semibold shadow-lg shadow-black/40 ${statusColor[v.status] ?? statusColor.DRAFT}`}>{STATUS_LABEL[v.status]}</span>
         </div>
       </Link>
 
