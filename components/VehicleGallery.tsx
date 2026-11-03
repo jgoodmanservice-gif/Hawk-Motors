@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { toEmbedUrl, youtubeThumb } from "@/lib/utils";
@@ -19,6 +19,15 @@ const isVideo = (t: string) => t.startsWith("VIDEO");
 export function VehicleGallery({ items }: { items: GalleryItem[] }) {
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  const [visited, setVisited] = useState<Set<number>>(() => new Set([0]));
+
+  useEffect(() => {
+    setVisited((prev) => (prev.has(active) ? prev : new Set(prev).add(active)));
+  }, [active]);
+
+  const n = items.length;
+  const mounted = new Set(visited);
+  if (n) [active, (active + 1) % n, (active - 1 + n) % n].forEach((i) => mounted.add(i));
 
   if (!items.length) {
     return <div className="glass grid aspect-[16/10] place-items-center text-[rgb(var(--muted))]">No media</div>;
@@ -41,7 +50,21 @@ export function VehicleGallery({ items }: { items: GalleryItem[] }) {
           />
         ) : (
           <button onClick={() => setLightbox(true)} className="group block h-full w-full">
-            <Image src={current.url} alt={current.alt || "Vehicle"} fill priority sizes="(max-width:1024px) 100vw, 66vw" className="object-cover" />
+            {/* Keep visited and neighbouring images mounted so the next/previous one is already loaded. */}
+            {items.map((it, idx) =>
+              !isVideo(it.type) && mounted.has(idx) ? (
+                <Image
+                  key={it.id}
+                  src={it.url}
+                  alt={it.alt || "Vehicle"}
+                  fill
+                  priority={idx === 0}
+                  loading={idx === 0 ? undefined : "eager"}
+                  sizes="(max-width:1024px) 100vw, 66vw"
+                  className={`object-cover transition-opacity duration-200 ${idx === active ? "opacity-100" : "opacity-0"}`}
+                />
+              ) : null
+            )}
             <span className="absolute bottom-3 right-3 chip border-white/20 bg-black/50 text-white opacity-0 transition group-hover:opacity-100">Click to enlarge</span>
           </button>
         )}

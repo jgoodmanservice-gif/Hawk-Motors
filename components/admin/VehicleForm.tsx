@@ -9,7 +9,25 @@ import { ComboBox } from "./ComboBox";
 import type { FilterOptions } from "@/lib/types";
 import { youtubeThumb } from "@/lib/utils";
 
-type MediaItem = { type: string; url: string; embedUrl?: string | null; alt?: string | null; position: number };
+/** Scales large photos down to 2000px on the long edge as JPEG; returns the original if it can't or needn't. */
+async function shrinkImage(file: File, maxEdge = 2000): Promise<File> {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    if (scale === 1 && file.size < 1.5 * 1024 * 1024) return file;
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.85));
+    return blob ? new File([blob], "photo.jpg", { type: "image/jpeg" }) : file;
+  } catch {
+    return file;
+  }
+}
+
+type MediaItem ={ type: string; url: string; embedUrl?: string | null; alt?: string | null; position: number };
 
 export type VehicleFormData = {
   id?: string;
@@ -88,8 +106,9 @@ export function VehicleForm({ initial, options }: { initial: VehicleFormData; op
     setError("");
     try {
       // Upload each file straight from the browser to Vercel Blob (no 4.5 MB server limit).
-      for (const file of Array.from(files)) {
-        const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      for (const original of Array.from(files)) {
+        const file = await shrinkImage(original);
+        const ext = file === original ? (file.name.split(".").pop() || "jpg").toLowerCase() : "jpg";
         const blob = await uploadToBlob(`vehicles/photo.${ext}`, file, {
           access: "public",
           handleUploadUrl: "/api/upload",
