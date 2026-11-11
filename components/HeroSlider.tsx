@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Phone, ChevronLeft, ChevronRight, ArrowUpRight, Calendar, Gauge, Fuel, Cog } from "lucide-react";
 import { formatPrice, formatMileage } from "@/lib/utils";
 import { telHref } from "@/lib/contact";
@@ -27,20 +27,6 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
     const t = setTimeout(() => go(1), SLIDE_MS);
     return () => clearTimeout(t);
   }, [i, paused, count, go]);
-
-  // Subtle 3D tilt that follows the pointer over the photo
-  const frame = useRef<HTMLDivElement>(null);
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const rx = useSpring(useTransform(py, [-0.5, 0.5], [4, -4]), { stiffness: 120, damping: 18 });
-  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-5, 5]), { stiffness: 120, damping: 18 });
-  const onMove = (e: React.PointerEvent) => {
-    if (e.pointerType !== "mouse" || !frame.current) return;
-    const r = frame.current.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width - 0.5);
-    py.set((e.clientY - r.top) / r.height - 0.5);
-  };
-  const onLeave = () => { px.set(0); py.set(0); setPaused(false); };
 
   if (count === 0) {
     return (
@@ -66,16 +52,11 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
       <div
         className="glass relative grid overflow-hidden lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
         onMouseEnter={() => setPaused(true)}
-        onMouseLeave={onLeave}
+        onMouseLeave={() => setPaused(false)}
       >
         {/* 4:3 photo */}
-        <div style={{ perspective: 1200 }} className="relative">
-          <motion.div
-            ref={frame}
-            onPointerMove={onMove}
-            style={{ rotateX: rx, rotateY: ry }}
-            className="relative aspect-[4/3] overflow-hidden bg-ink-900"
-          >
+        <div className="relative">
+          <div className="relative aspect-[4/3] overflow-hidden bg-ink-900">
             <AnimatePresence initial={false} custom={dir} mode="popLayout">
               <motion.div
                 key={v.id}
@@ -135,7 +116,7 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
                 />
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
 
         {/* Details */}
