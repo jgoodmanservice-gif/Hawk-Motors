@@ -47,15 +47,19 @@ export function Footer({ contact }: { contact: SiteContact }) {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/5 py-5 text-center text-xs text-[rgb(var(--muted))]">
+      <div className="border-t border-white/5 pb-24 pt-5 text-center text-xs text-[rgb(var(--muted))] sm:pb-8">
         © {new Date().getFullYear()} Hawk Motors. All rights reserved. ·{" "}
         <Link href="/admin" className="hover:text-[rgb(var(--fg))]">Admin</Link>
-        <p className="mt-2">
-          Website made by{" "}
-          <a href="https://satinpixel.co.uk" target="_blank" rel="noopener" className="font-medium text-[rgb(var(--fg))] hover:text-accent">
-            Satin Pixel
-          </a>
-        </p>
+        <a
+          href="https://satinpixel.co.uk"
+          target="_blank"
+          rel="noopener"
+          aria-label="Website made by Satin Pixel"
+          className="mx-auto mt-5 block w-64 overflow-hidden rounded-xl border border-white/10 shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:border-white/25 sm:w-80 md:w-96"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/satin-pixel.webp" alt="Website made by Satin Pixel" width={960} height={271} className="h-auto w-full" loading="lazy" />
+        </a>
       </div>
     </footer>
   );
