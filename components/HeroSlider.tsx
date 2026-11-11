@@ -62,9 +62,9 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
                 key={v.id}
                 custom={dir}
                 className="absolute inset-0"
-                initial={{ opacity: 0, x: dir * 60, scale: 1.04 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: dir * -60, scale: 0.98 }}
+                initial={{ opacity: 0, x: dir * 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: dir * -60 }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 drag={count > 1 ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
@@ -77,7 +77,7 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
                 <Link href={`/vehicles/${v.slug}`} aria-label={v.title} draggable={false} className="absolute inset-0 overflow-hidden">
                   {v.image && (
                     <Image src={v.image} alt={v.title} fill priority quality={90} draggable={false}
-                      sizes="(max-width:1024px) 100vw, 60vw" className="ken-burns object-cover" />
+                      sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
                   )}
                 </Link>
               </motion.div>
