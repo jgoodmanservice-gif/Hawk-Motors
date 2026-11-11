@@ -2,30 +2,45 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Phone, Mail, ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Phone, ChevronLeft, ChevronRight, ArrowUpRight, Calendar, Gauge, Fuel, Cog } from "lucide-react";
 import { formatPrice, formatMileage } from "@/lib/utils";
-import { telHref, mailtoHref } from "@/lib/contact";
+import { telHref } from "@/lib/contact";
 import type { VehicleCardData } from "@/lib/types";
 
-export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]; phone: string; email: string }) {
-  const [i, setI] = useState(0);
-  const [visible, setVisible] = useState(true);
+const SLIDE_MS = 6500;
+
+export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone: string; email?: string }) {
+  const [[i, dir], setState] = useState<[number, number]>([0, 1]);
+  const [paused, setPaused] = useState(false);
   const count = slides.length;
 
-  useEffect(() => {
-    if (count < 2) return;
-    const t = setInterval(() => {
-      setVisible(false);
-      setTimeout(() => { setI((p) => (p + 1) % count); setVisible(true); }, 400);
-    }, 6000);
-    return () => clearInterval(t);
-  }, [count]);
+  const go = useCallback(
+    (d: number) => setState(([p]) => [(p + d + count) % count, d]),
+    [count]
+  );
+  const jump = (idx: number) => setState(([p]) => [idx, idx >= p ? 1 : -1]);
 
-  const go = (d: number) => {
-    setVisible(false);
-    setTimeout(() => { setI((p) => (p + d + count) % count); setVisible(true); }, 400);
+  useEffect(() => {
+    if (count < 2 || paused) return;
+    const t = setTimeout(() => go(1), SLIDE_MS);
+    return () => clearTimeout(t);
+  }, [i, paused, count, go]);
+
+  // Subtle 3D tilt that follows the pointer over the photo
+  const frame = useRef<HTMLDivElement>(null);
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const rx = useSpring(useTransform(py, [-0.5, 0.5], [4, -4]), { stiffness: 120, damping: 18 });
+  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-5, 5]), { stiffness: 120, damping: 18 });
+  const onMove = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse" || !frame.current) return;
+    const r = frame.current.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
   };
+  const onLeave = () => { px.set(0); py.set(0); setPaused(false); };
 
   if (count === 0) {
     return (
@@ -39,57 +54,140 @@ export function HeroSlider({ slides, phone, email }: { slides: VehicleCardData[]
   }
 
   const v = slides[i];
-
-  const fade = { opacity: visible ? 1 : 0 };
+  const specs = [
+    { icon: Calendar, label: "Year", value: v.year },
+    { icon: Gauge, label: "Mileage", value: formatMileage(v.mileage) },
+    { icon: Fuel, label: "Fuel", value: v.fuelType ?? "—" },
+    { icon: Cog, label: "Gearbox", value: v.transmission ?? "—" },
+  ];
 
   return (
-    <section className="mx-auto max-w-screen-2xl px-4 pt-6">
-      <div className="glass grid overflow-hidden lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        {/* 4:3 photo, no overlay so the car is fully visible */}
-        <div className="relative aspect-[4/3] bg-ink-900">
-          <Link href={`/vehicles/${v.slug}`} className="absolute inset-0 transition-opacity duration-700" style={fade} aria-label={v.title}>
-            {v.image && <Image src={v.image} alt={v.title} fill priority quality={90} sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />}
-          </Link>
+    <section className="relative mx-auto max-w-screen-2xl px-4 pt-6">
+      <div
+        className="glass relative grid overflow-hidden lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={onLeave}
+      >
+        {/* 4:3 photo */}
+        <div style={{ perspective: 1200 }} className="relative">
+          <motion.div
+            ref={frame}
+            onPointerMove={onMove}
+            style={{ rotateX: rx, rotateY: ry }}
+            className="relative aspect-[4/3] overflow-hidden bg-ink-900"
+          >
+            <AnimatePresence initial={false} custom={dir} mode="popLayout">
+              <motion.div
+                key={v.id}
+                custom={dir}
+                className="absolute inset-0"
+                initial={{ opacity: 0, x: dir * 60, scale: 1.04 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: dir * -60, scale: 0.98 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                drag={count > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.25}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -60) go(1);
+                  else if (info.offset.x > 60) go(-1);
+                }}
+              >
+                <Link href={`/vehicles/${v.slug}`} aria-label={v.title} draggable={false} className="absolute inset-0 overflow-hidden">
+                  {v.image && (
+                    <Image src={v.image} alt={v.title} fill priority quality={90} draggable={false}
+                      sizes="(max-width:1024px) 100vw, 60vw" className="ken-burns object-cover" />
+                  )}
+                </Link>
+              </motion.div>
+            </AnimatePresence>
 
-          {count > 1 && (
-            <>
-              <button onClick={() => go(-1)} aria-label="Previous" className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 backdrop-blur-md hover:bg-black/70">
-                <ChevronLeft className="text-white" />
-              </button>
-              <button onClick={() => go(1)} aria-label="Next" className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 backdrop-blur-md hover:bg-black/70">
-                <ChevronRight className="text-white" />
-              </button>
-              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5 rounded-full bg-black/40 px-2 py-1.5 backdrop-blur-md">
-                {slides.map((s, idx) => (
-                  <button key={s.id} onClick={() => setI(idx)} aria-label={`Slide ${idx + 1}`} className={`h-1.5 rounded-full transition-all ${idx === i ? "w-6 bg-white" : "w-1.5 bg-white/50"}`} />
-                ))}
+            {/* Warm up the next photo so it is ready before it slides in */}
+            {count > 1 && slides[(i + 1) % count].image && (
+              <Image src={slides[(i + 1) % count].image!} alt="" aria-hidden fill quality={90} loading="eager"
+                sizes="(max-width:1024px) 100vw, 60vw" className="pointer-events-none -z-10 object-cover opacity-0" />
+            )}
+
+            {/* Slide counter */}
+            <div className="pointer-events-none absolute left-4 top-4 flex items-baseline gap-1 rounded-full bg-black/55 px-3 py-1 font-display text-white backdrop-blur-md">
+              <span className="text-lg font-bold">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-xs text-white/60">/ {String(count).padStart(2, "0")}</span>
+            </div>
+
+            {count > 1 && (
+              <>
+                <button onClick={() => go(-1)} aria-label="Previous car" className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-md transition hover:scale-110 hover:bg-black/75">
+                  <ChevronLeft />
+                </button>
+                <button onClick={() => go(1)} aria-label="Next car" className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-md transition hover:scale-110 hover:bg-black/75">
+                  <ChevronRight />
+                </button>
+              </>
+            )}
+
+            {/* Autoplay progress */}
+            {count > 1 && (
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-black/30">
+                <div
+                  key={`${i}-${paused}`}
+                  className="fill-x h-full bg-accent"
+                  style={{ animationDuration: `${SLIDE_MS}ms`, animationPlayState: paused ? "paused" : "running" }}
+                />
               </div>
-            </>
-          )}
+            )}
+          </motion.div>
         </div>
 
-        {/* Details sit below the photo (beside it on large screens) */}
-        <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-10">
-          <div
-            className="transition-all duration-500"
-            style={{ ...fade, transform: visible ? "translateY(0)" : "translateY(12px)" }}
-          >
-            <span className="chip border-accent/40 text-accent">★ Featured vehicle</span>
-            <h1 className="mt-3 font-display text-xl font-extrabold leading-tight sm:text-3xl lg:text-4xl">{v.title}</h1>
-            <p className="mt-3 text-2xl font-bold sm:text-3xl">{formatPrice(v.price)}</p>
-            <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm text-[rgb(var(--muted))]">
-              <span>{v.year}</span>
-              <span>{formatMileage(v.mileage)}</span>
-              {v.fuelType && <span>{v.fuelType}</span>}
-              {v.transmission && <span>{v.transmission}</span>}
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <Link href={`/vehicles/${v.slug}`} className="btn-accent">View vehicle</Link>
-              <a href={telHref(phone)} className="btn-ghost"><Phone size={16} /> Call now</a>
-              <a href={mailtoHref(email, `Enquiry: ${v.title}`)} className="btn-ghost hidden sm:inline-flex"><Mail size={16} /> Email</a>
-              <Link href="/inventory" className="btn-ghost hidden lg:inline-flex">All used cars</Link>
+        {/* Details */}
+        <div className="flex min-w-0 flex-col p-5 sm:p-6 lg:p-8">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={v.id}
+              initial="out" animate="in" exit="out"
+              variants={{ in: { transition: { staggerChildren: 0.06 } }, out: {} }}
+              className="flex flex-1 flex-col justify-center"
+            >
+              {[
+                <span key="c" className="chip w-fit border-accent/40 text-accent">★ Featured vehicle</span>,
+                <h1 key="t" className="mt-3 font-display text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl">{v.title}</h1>,
+                <p key="p" className="mt-2 font-display text-4xl font-bold heading-gradient sm:text-5xl">{formatPrice(v.price)}</p>,
+                <div key="s" className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-2">
+                  {specs.map((s) => (
+                    <div key={s.label} className="rounded-xl border bg-white/[0.03] px-3 py-2.5">
+                      <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-[rgb(var(--muted))]"><s.icon size={12} /> {s.label}</p>
+                      <p className="mt-0.5 truncate text-sm font-semibold">{s.value}</p>
+                    </div>
+                  ))}
+                </div>,
+                <div key="b" className="mt-5 flex flex-wrap gap-2">
+                  <Link href={`/vehicles/${v.slug}`} className="btn-accent group/b">
+                    View this car <ArrowUpRight size={16} className="transition group-hover/b:-translate-y-0.5 group-hover/b:translate-x-0.5" />
+                  </Link>
+                  <a href={telHref(phone)} className="btn-ghost"><Phone size={16} /> Call now</a>
+                </div>,
+              ].map((el, k) => (
+                <motion.div key={k} variants={{ out: { opacity: 0, y: 14 }, in: { opacity: 1, y: 0 } }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
+                  {el}
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Car picker rail */}
+          {count > 1 && (
+            <div className="no-scrollbar -mx-1 mt-6 flex gap-2 overflow-x-auto px-1 pb-1">
+              {slides.map((s, idx) => (
+                <button
+                  key={s.id}
+                  onClick={() => jump(idx)}
+                  aria-label={`Show ${s.title}`}
+                  className={`relative h-14 w-20 flex-none overflow-hidden rounded-lg border-2 transition duration-300 ${idx === i ? "border-accent" : "border-transparent opacity-50 grayscale hover:opacity-100 hover:grayscale-0"}`}
+                >
+                  {s.image && <Image src={s.image} alt="" fill sizes="80px" className="object-cover" />}
+                </button>
+              ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

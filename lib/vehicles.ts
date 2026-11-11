@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import type { VehicleCardData, FilterOptions } from "./types";
+import { DEMO, demoFeatured, demoStock, demoOptions, demoList, demoVehicle, demoSimilar } from "./demo";
 
 const cardInclude = {
   make: true,
@@ -32,6 +33,7 @@ export function toCard(v: VehicleWithRels): VehicleCardData {
 }
 
 export async function getFeatured(limit = 6): Promise<VehicleCardData[]> {
+  if (DEMO) return demoFeatured(limit);
   const rows = await prisma.vehicle.findMany({
     where: { featured: true, status: { not: "DRAFT" } },
     include: cardInclude,
@@ -42,6 +44,7 @@ export async function getFeatured(limit = 6): Promise<VehicleCardData[]> {
 }
 
 export async function getStockCount() {
+  if (DEMO) return demoStock();
   return prisma.vehicle.count({ where: { status: "AVAILABLE" } });
 }
 
@@ -61,6 +64,7 @@ export async function getAllFilterOptions(): Promise<FilterOptions> {
 }
 
 export async function getFilterOptions(): Promise<FilterOptions> {
+  if (DEMO) return demoOptions();
   const [makes, fuelTypes, bodyStyles, colours] = await Promise.all([
     prisma.make.findMany({
       where: { Vehicle: { some: { status: { not: "DRAFT" } } } },
@@ -96,6 +100,7 @@ const SORTS: Record<string, Prisma.VehicleOrderByWithRelationInput> = {
 };
 
 export async function listVehicles(sp: SearchParams) {
+  if (DEMO) return demoList(sp);
   const get = (k: string) => (Array.isArray(sp[k]) ? sp[k]?.[0] : sp[k]) as string | undefined;
   const num = (k: string) => {
     const v = get(k);
@@ -148,6 +153,11 @@ export async function listVehicles(sp: SearchParams) {
 }
 
 export async function getVehicleBySlug(slug: string) {
+  if (DEMO) return demoVehicle(slug) as unknown as Awaited<ReturnType<typeof getVehicleFromDb>>;
+  return getVehicleFromDb(slug);
+}
+
+function getVehicleFromDb(slug: string) {
   return prisma.vehicle.findUnique({
     where: { slug },
     include: {
@@ -162,6 +172,7 @@ export async function getVehicleBySlug(slug: string) {
 }
 
 export async function getSimilar(vehicleId: string, makeId: string, bodyStyleId: string | null, limit = 3) {
+  if (DEMO) return demoSimilar(vehicleId, limit);
   const rows = await prisma.vehicle.findMany({
     where: {
       id: { not: vehicleId },

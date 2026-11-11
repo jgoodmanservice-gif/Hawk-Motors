@@ -5,39 +5,51 @@ import { QuickSearch } from "@/components/QuickSearch";
 import { VehicleCard } from "@/components/VehicleCard";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { ContactSection } from "@/components/ContactSection";
-import { getFeatured, getFilterOptions, getStockCount } from "@/lib/vehicles";
+import { Marquee } from "@/components/Marquee";
+import { BudgetFinder } from "@/components/BudgetFinder";
+import { HowItWorks } from "@/components/HowItWorks";
+import { PartExCta } from "@/components/PartExCta";
+import { ReadMore } from "@/components/ReadMore";
+import { Reveal } from "@/components/fx/Reveal";
+import { CountUp } from "@/components/fx/CountUp";
+import { getFeatured, getFilterOptions, getStockCount, listVehicles } from "@/lib/vehicles";
 import { getSiteContact } from "@/lib/site";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [featured, options, stock, contact] = await Promise.all([
+  const [featured, options, stock, contact, all] = await Promise.all([
     getFeatured(6),
     getFilterOptions(),
     getStockCount(),
     getSiteContact(),
+    listVehicles({}),
   ]);
 
   return (
     <>
       <HeroSlider slides={featured} phone={contact.phone} email={contact.email} />
       <QuickSearch options={options} />
+      <Marquee />
 
       <section className="mx-auto max-w-screen-2xl px-4 py-20">
-        <div className="mb-8 flex items-end justify-between">
+        <Reveal className="mb-8 flex items-end justify-between">
           <div>
-            <p className="chip border-accent/30 text-accent">{stock} vehicles in stock</p>
-            <h2 className="mt-3 font-display text-3xl font-extrabold heading-gradient md:text-4xl">Featured vehicles</h2>
+            <p className="chip border-accent/30 text-accent">
+              <span className="relative mr-1 flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
+              <CountUp to={stock} /> vehicles in stock now
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-extrabold heading-gradient md:text-5xl">Featured vehicles</h2>
           </div>
           <Link href="/inventory" className="btn-ghost hidden sm:inline-flex">
             Browse used cars <ArrowRight size={16} />
           </Link>
-        </div>
+        </Reveal>
 
         {featured.length ? (
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-            {featured.map((v) => (
-              <VehicleCard key={v.id} v={v} phone={contact.phone} />
+            {featured.map((v, k) => (
+              <VehicleCard key={v.id} v={v} phone={contact.phone} index={k} />
             ))}
           </div>
         ) : (
@@ -49,11 +61,15 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <BudgetFinder cars={all} />
       <WhyChooseUs />
+      <HowItWorks />
+      <PartExCta contact={contact} />
 
       <section className="mx-auto max-w-screen-2xl px-4 pb-16">
         <div className="glass p-8 md:p-12">
           <h2 className="font-display text-2xl font-extrabold heading-gradient md:text-3xl">Used Cars in Leicester — Hawk Motors</h2>
+          <ReadMore>
           <div className="mt-6 grid gap-6 text-sm leading-relaxed text-[rgb(var(--muted))] md:grid-cols-2">
             <div className="space-y-4">
               <p>
@@ -84,6 +100,7 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+          </ReadMore>
         </div>
       </section>
 

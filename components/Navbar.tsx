@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { Phone, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -16,13 +18,26 @@ const links = [
 
 export function Navbar({ contact }: { contact: SiteContact }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 26 });
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50">
+    <header className={`sticky top-0 z-50 transition-[padding] duration-300 ${scrolled ? "pt-2" : "pt-0"}`}>
       <div className="px-4">
-        <nav className="glass flex items-center justify-between gap-2 px-4 py-2.5 md:px-6">
+        <nav className={`glass relative flex items-center justify-between gap-2 overflow-hidden px-4 transition-all duration-300 md:px-6 ${scrolled ? "mx-auto max-w-screen-xl py-1.5 shadow-2xl" : "py-2.5"}`}>
+          <motion.span aria-hidden style={{ scaleX: progress }} className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent" />
           <Link href="/" className="flex items-center" aria-label="Hawk Motor Centre home">
             <div className="relative">
-              <Logo className="h-12 w-auto md:h-16" />
+              <Logo className={`w-auto transition-all duration-300 ${scrolled ? "h-10 md:h-12" : "h-12 md:h-16"}`} />
               {/* Left wing tip */}
               <span className="pointer-events-none absolute" style={{ left: "1%", top: "4%", margin: "-7px 0 0 -7px" }}>
                 <span className="wing-sparkle" style={{ animationDelay: "0s" }}>
@@ -45,15 +60,19 @@ export function Navbar({ contact }: { contact: SiteContact }) {
           </Link>
 
           <div className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="rounded-lg px-4 py-2.5 text-base font-medium text-[rgb(var(--muted))] transition hover:bg-white/5 hover:text-[rgb(var(--fg))]"
-              >
-                {l.label}
-              </Link>
-            ))}
+            {links.map((l) => {
+              const active = l.href === pathname || (l.href === "/inventory" && pathname.startsWith("/vehicles"));
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className={`group relative whitespace-nowrap rounded-lg px-3 py-2.5 lg:px-4 text-base font-medium transition hover:text-[rgb(var(--fg))] ${active ? "text-[rgb(var(--fg))]" : "text-[rgb(var(--muted))]"}`}
+                >
+                  {l.label}
+                  <span className={`absolute inset-x-4 bottom-1 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300 group-hover:scale-x-100 ${active ? "scale-x-100" : "scale-x-0"}`} />
+                </Link>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-2">
@@ -72,7 +91,7 @@ export function Navbar({ contact }: { contact: SiteContact }) {
         </nav>
 
         {open && (
-          <div className="glass mt-2 flex flex-col gap-1 p-3 md:hidden">
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="glass mt-2 flex flex-col gap-1 p-3 md:hidden">
             {links.map((l) => (
               <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-white/5">
                 {l.label}
@@ -81,7 +100,7 @@ export function Navbar({ contact }: { contact: SiteContact }) {
             <a href={telHref(contact.phone)} className="btn-accent mt-1">
               <Phone size={16} /> Call {contact.phone}
             </a>
-          </div>
+          </motion.div>
         )}
       </div>
     </header>
