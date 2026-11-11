@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Gauge, Fuel, Cog, Calendar, Phone, ArrowUpRight } from "lucide-react";
 import { formatPrice, formatMileage, STATUS_LABEL } from "@/lib/utils";
 import { telHref } from "@/lib/contact";
@@ -17,38 +16,26 @@ const statusColor: Record<string, string> = {
 };
 
 export function VehicleCard({ v, phone, index = 0 }: { v: VehicleCardData; phone: string; index?: number }) {
-  const ref = useRef<HTMLElement>(null);
-  const px = useMotionValue(0.5);
-  const py = useMotionValue(0.5);
-  const rx = useSpring(useTransform(py, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
-  const ry = useSpring(useTransform(px, [0, 1], [-8, 8]), { stiffness: 200, damping: 20 });
-
+  // Light glare follows the mouse (no tilt)
   function onMove(e: React.PointerEvent<HTMLElement>) {
-    if (e.pointerType !== "mouse" || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    const y = (e.clientY - r.top) / r.height;
-    px.set(x); py.set(y);
-    ref.current.style.setProperty("--mx", `${x * 100}%`);
-    ref.current.style.setProperty("--my", `${y * 100}%`);
+    if (e.pointerType !== "mouse") return;
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
   }
-  const reset = () => { px.set(0.5); py.set(0.5); };
 
   const sold = v.status === "SOLD";
 
   return (
     <motion.div
-      style={{ perspective: 900 }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      <motion.article
-        ref={ref}
+      <article
         onPointerMove={onMove}
-        onPointerLeave={reset}
-        style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
         className="glass group relative h-full overflow-hidden transition-[border-color,box-shadow] duration-300 hover:border-accent/40 hover:shadow-glow"
       >
         <span className="glare" aria-hidden />
@@ -83,7 +70,7 @@ export function VehicleCard({ v, phone, index = 0 }: { v: VehicleCardData; phone
           </span>
         </Link>
 
-        <div className="p-3 sm:p-4" style={{ transform: "translateZ(20px)" }}>
+        <div className="p-3 sm:p-4">
           <Link href={`/vehicles/${v.slug}`} className="line-clamp-2 font-display text-xs font-semibold leading-snug transition-colors hover:text-accent sm:text-base">
             {v.title}
           </Link>
@@ -100,7 +87,7 @@ export function VehicleCard({ v, phone, index = 0 }: { v: VehicleCardData; phone
             <a href={telHref(phone)} className="btn-accent py-1.5 text-xs" aria-label="Call now"><Phone size={13} /></a>
           </div>
         </div>
-      </motion.article>
+      </article>
     </motion.div>
   );
 }
