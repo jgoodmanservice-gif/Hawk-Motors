@@ -50,6 +50,12 @@ export function Footer({ contact }: { contact: SiteContact }) {
       <div className="border-t border-white/5 py-5 text-center text-xs text-[rgb(var(--muted))]">
         © {new Date().getFullYear()} Hawk Motors. All rights reserved. ·{" "}
         <Link href="/admin" className="hover:text-[rgb(var(--fg))]">Admin</Link>
+        <p className="mt-2">
+          Website made by{" "}
+          <a href="https://satinpixel.co.uk" target="_blank" rel="noopener" className="font-medium text-[rgb(var(--fg))] hover:text-accent">
+            Satin Pixel
+          </a>
+        </p>
       </div>
     </footer>
   );
