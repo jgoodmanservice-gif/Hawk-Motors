@@ -226,7 +226,6 @@ body {
 /* Infinite ticker */
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .marquee-track { animation: marquee 32s linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
 
 /* Rotating conic border for the call-to-action band */
 @property --spin { syntax: "<angle>"; initial-value: 0deg; inherits: false; }

@@ -13,6 +13,7 @@ const SLIDE_MS = 6500;
 
 export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone: string; email?: string }) {
   const [[i, dir], setState] = useState<[number, number]>([0, 1]);
+  const [paused, setPaused] = useState(false);
   const count = slides.length;
 
   const go = useCallback(
@@ -22,10 +23,10 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
   const jump = (idx: number) => setState(([p]) => [idx, idx >= p ? 1 : -1]);
 
   useEffect(() => {
-    if (count < 2) return;
+    if (count < 2 || paused) return;
     const t = setTimeout(() => go(1), SLIDE_MS);
     return () => clearTimeout(t);
-  }, [i, count, go]);
+  }, [i, paused, count, go]);
 
   if (count === 0) {
     return (
@@ -50,6 +51,8 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
     <section className="relative mx-auto max-w-screen-2xl px-4 pt-6">
       <div
         className="glass relative grid overflow-hidden lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
       >
         {/* 4:3 photo */}
         <div className="relative">
@@ -107,9 +110,9 @@ export function HeroSlider({ slides, phone }: { slides: VehicleCardData[]; phone
             {count > 1 && (
               <div className="absolute inset-x-0 bottom-0 h-1 bg-black/30">
                 <div
-                  key={i}
+                  key={`${i}-${paused}`}
                   className="fill-x h-full bg-accent"
-                  style={{ animationDuration: `${SLIDE_MS}ms` }}
+                  style={{ animationDuration: `${SLIDE_MS}ms`, animationPlayState: paused ? "paused" : "running" }}
                 />
               </div>
             )}
